@@ -6,5 +6,6 @@ namespace Elmah.RavenDbErrorLog
     {
         public string Id { get; set; }
         public Error Error { get; set; }
+        public string AllXml { get; set; }
     }
 }

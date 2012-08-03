@@ -82,9 +82,12 @@ namespace Elmah.RavenDbErrorLog
                 throw new ArgumentNullException("error");
             }
 
+            var errorXml = ErrorXml.EncodeString(error);
+
             var errorDoc = new ErrorDocument
             {
-                Error = error
+                Error = error,
+                AllXml = errorXml
             };
 
             using (var session = _documentStore.OpenSession(ApplicationName))
@@ -98,6 +101,7 @@ namespace Elmah.RavenDbErrorLog
 
         public override ErrorLogEntry GetError(string id)
         {
+            ErrorLogEntry result;
             ErrorDocument document;
 
             using (var session = _documentStore.OpenSession(ApplicationName))
@@ -105,7 +109,13 @@ namespace Elmah.RavenDbErrorLog
                 document = session.Load<ErrorDocument>(id);
             }
 
-            var result = new ErrorLogEntry(this, id, document.Error);
+            if (!string.IsNullOrEmpty(document.AllXml)) {
+                result = new ErrorLogEntry(this, id, ErrorXml.DecodeString(document.AllXml));
+
+            } else {
+                result = new ErrorLogEntry(this, id, document.Error);
+
+            }
 
             return result;
         }
