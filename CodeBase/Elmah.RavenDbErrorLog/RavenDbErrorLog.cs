@@ -109,12 +109,13 @@ namespace Elmah.RavenDbErrorLog
                 document = session.Load<ErrorDocument>(id);
             }
 
-            if (!string.IsNullOrEmpty(document.AllXml)) {
+            if (!string.IsNullOrEmpty(document.AllXml))
+            {
                 result = new ErrorLogEntry(this, id, ErrorXml.DecodeString(document.AllXml));
-
-            } else {
+            }
+            else
+            {
                 result = new ErrorLogEntry(this, id, document.Error);
-
             }
 
             return result;
