@@ -59,8 +59,6 @@ namespace Elmah.RavenDbErrorLog
             _documentStore.Conventions.DocumentKeyGenerator = c => Guid.NewGuid().ToString();
 
             _documentStore.Initialize();
-
-            _documentStore.DatabaseCommands.EnsureDatabaseExists(ApplicationName);
         }
 
         //public RavenDbErrorLog(string connectionString)
