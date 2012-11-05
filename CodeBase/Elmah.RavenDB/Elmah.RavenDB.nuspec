@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Elmah.RavenDB</id>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <authors>Christoph Keller, Greg Brant</authors>
     <owners>Greg Brant</owners>
     <licenseUrl>https://github.com/GregBrant/Elmah.RavenDB/blob/master/license.txt</licenseUrl>
@@ -10,7 +10,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>RavenDB storage for Elmah</summary>
     <description>RavenDB storage for Elmah</description>
-    <releaseNotes>Minor fix to add dependencies.</releaseNotes>
+    <releaseNotes>Minor fix for issue when opening connections specifying the ApplicationName as the database name.</releaseNotes>
     <copyright>Copyright 2012</copyright>
     <tags>Elmah RavenDB</tags>
     <dependencies>
