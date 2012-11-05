@@ -8,7 +8,7 @@
     <ProjectGuid>{7D200B0A-4D0E-4032-99E1-EAE2213C19C4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Elmah.RavenDb</RootNamespace>
+    <RootNamespace>Elmah</RootNamespace>
     <AssemblyName>Elmah.RavenDb</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

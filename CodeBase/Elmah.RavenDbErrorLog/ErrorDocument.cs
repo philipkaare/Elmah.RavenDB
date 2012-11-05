@@ -1,6 +1,6 @@
 using System;
 
-namespace Elmah.RavenDb
+namespace Elmah
 {
     public class ErrorDocument
     {
