@@ -1,9 +1,11 @@
-ECHO off
+@echo off
 
 IF EXIST "NuGetTemp" rmdir /S /Q "NuGetTemp"
 
-IF NOT EXIST "Elmah.RavenDB\bin\Release\Elmah.RavenDb.dll" ECHO "Build the solution in Release configuration before creating the NuGet package"
+IF NOT EXIST "Elmah.RavenDB\bin\Release\Elmah.RavenDB.dll" 	(
+	ECHO Build the solution in Release configuration before creating the NuGet package
 	EXIT /B
+)
 
 
 mkdir "NuGetTemp"
