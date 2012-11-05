@@ -57,7 +57,6 @@ namespace Elmah
             };
 
             _documentStore.Conventions.DocumentKeyGenerator = c => Guid.NewGuid().ToString();
-
             _documentStore.Initialize();
         }
 
@@ -88,7 +87,7 @@ namespace Elmah
                 AllXml = errorXml
             };
 
-            using (var session = _documentStore.OpenSession(ApplicationName))
+            using (var session = _documentStore.OpenSession())
             {
                 session.Store(errorDoc);
                 session.SaveChanges();
@@ -102,7 +101,7 @@ namespace Elmah
             ErrorLogEntry result;
             ErrorDocument document;
 
-            using (var session = _documentStore.OpenSession(ApplicationName))
+            using (var session = _documentStore.OpenSession())
             {
                 document = session.Load<ErrorDocument>(id);
             }
@@ -121,7 +120,7 @@ namespace Elmah
 
         public override int GetErrors(int pageIndex, int pageSize, IList errorEntryList)
         {
-            using (var session = _documentStore.OpenSession(ApplicationName))
+            using (var session = _documentStore.OpenSession())
             {
                 RavenQueryStatistics stats;
 
