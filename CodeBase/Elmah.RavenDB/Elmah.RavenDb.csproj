@@ -63,6 +63,7 @@
     <Compile Include="RavenDbErrorLog.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Elmah.RavenDb.dll.nuspec" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

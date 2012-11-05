@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Elmah.RavenDb</id>
+    <version>1.0.0</version>
+    <authors>Christoph Keller, Greg Brant</authors>
+    <owners>Christoph Keller, Greg Brant</owners>
+    <licenseUrl>https://github.com/GregBrant/Elmah.RavenDB/blob/master/license.txt</licenseUrl>
+    <projectUrl>https://github.com/GregBrant/Elmah.RavenDB</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <summary>RavenDB storage for Elmah</summary>
+    <description>RavenDB storage for Elmah</description>
+    <releaseNotes>Initial fork from https://github.com/ccellar/Elmah.RavenDB and refactoring to get to V1.</releaseNotes>
+    <copyright>Copyright 2012</copyright>
+    <tags>Elmah RavenDB</tags>
+    <dependencies>
+    </dependencies>
+  </metadata>
+</package>
