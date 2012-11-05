@@ -7,7 +7,7 @@ using Raven.Client.Document;
 using Raven.Client.Extensions;
 using Raven.Client.Linq;
 
-namespace Elmah.RavenDbErrorLog
+namespace Elmah.RavenDb
 {
     public class RavenDbErrorLog : ErrorLog
     {

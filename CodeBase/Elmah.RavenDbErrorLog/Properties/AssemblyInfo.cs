@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Elmah.RavenDbErrorLog")]
+[assembly: AssemblyTitle("Elmah.RavenDb")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Christoph Keller")]
-[assembly: AssemblyProduct("Elmah.RavenDbErrorLog")]
+[assembly: AssemblyProduct("Elmah.RavenDb")]
 [assembly: AssemblyCopyright("Copyright © Christoph Keller 2011-2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
