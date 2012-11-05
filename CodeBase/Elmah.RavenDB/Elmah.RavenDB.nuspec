@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Elmah.RavenDb</id>
+    <id>Elmah.RavenDB</id>
     <version>1.0.0</version>
     <authors>Christoph Keller, Greg Brant</authors>
     <owners>Christoph Keller, Greg Brant</owners>

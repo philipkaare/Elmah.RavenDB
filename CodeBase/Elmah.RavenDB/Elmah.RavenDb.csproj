@@ -63,10 +63,11 @@
     <Compile Include="RavenDbErrorLog.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Elmah.RavenDb.dll.nuspec" />
+    <None Include="Elmah.RavenDB.nuspec" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="web.config.transform" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" />

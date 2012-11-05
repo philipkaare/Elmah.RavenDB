@@ -1,1 +1,0 @@
-"./.nuget/nuget" pack "./Elmah.RavenDB/Elmah.RavenDb.csproj" -Prop Configuration=Release
