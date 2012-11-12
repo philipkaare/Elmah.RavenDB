@@ -7,7 +7,7 @@ using Raven.Client.Document;
 using Raven.Client.Extensions;
 using Raven.Client.Linq;
 
-namespace Elmah.RavenDbErrorLog
+namespace Elmah
 {
     public class RavenDbErrorLog : ErrorLog
     {
@@ -57,10 +57,7 @@ namespace Elmah.RavenDbErrorLog
             };
 
             _documentStore.Conventions.DocumentKeyGenerator = c => Guid.NewGuid().ToString();
-
             _documentStore.Initialize();
-
-            _documentStore.DatabaseCommands.EnsureDatabaseExists(ApplicationName);
         }
 
         //public RavenDbErrorLog(string connectionString)
@@ -82,12 +79,15 @@ namespace Elmah.RavenDbErrorLog
                 throw new ArgumentNullException("error");
             }
 
+            var errorXml = ErrorXml.EncodeString(error);
+
             var errorDoc = new ErrorDocument
             {
-                Error = error
+                Error = error,
+                AllXml = errorXml
             };
 
-            using (var session = _documentStore.OpenSession(ApplicationName))
+            using (var session = _documentStore.OpenSession())
             {
                 session.Store(errorDoc);
                 session.SaveChanges();
@@ -98,21 +98,29 @@ namespace Elmah.RavenDbErrorLog
 
         public override ErrorLogEntry GetError(string id)
         {
+            ErrorLogEntry result;
             ErrorDocument document;
 
-            using (var session = _documentStore.OpenSession(ApplicationName))
+            using (var session = _documentStore.OpenSession())
             {
                 document = session.Load<ErrorDocument>(id);
             }
 
-            var result = new ErrorLogEntry(this, id, document.Error);
+            if (!string.IsNullOrEmpty(document.AllXml))
+            {
+                result = new ErrorLogEntry(this, id, ErrorXml.DecodeString(document.AllXml));
+            }
+            else
+            {
+                result = new ErrorLogEntry(this, id, document.Error);
+            }
 
             return result;
         }
 
         public override int GetErrors(int pageIndex, int pageSize, IList errorEntryList)
         {
-            using (var session = _documentStore.OpenSession(ApplicationName))
+            using (var session = _documentStore.OpenSession())
             {
                 RavenQueryStatistics stats;
 

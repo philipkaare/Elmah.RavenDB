@@ -27,3 +27,7 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
+/CodeBase/Elmah.RavenDB/Elmah.RavenDB.*.nupkg
+/CodeBase/*.nupkg
+/CodeBase/*.ncrunchsolution
+/NuGetTemp
