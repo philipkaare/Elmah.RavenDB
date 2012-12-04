@@ -22,55 +22,15 @@ namespace Elmah
                 throw new ArgumentNullException("config");
             }
 
-            var connectionString = GetConnectionString(config);
-
-            //
-            // If there is no connection string to use then throw an 
-            // exception to abort construction.
-            //
-
-            if (connectionString.Length == 0)
-                throw new ApplicationException("Connection string is missing for the RavenDB error log.");
-
-            _connectionString = connectionString;
-
-            //
-            // Set the application name as this implementation provides
-            // per-application isolation over a single store.
-            //
-            var appName = String.Empty;
-            if (config["applicationName"] != null)
-            {
-                appName = (string)config["applicationName"];
-            }
-
-            ApplicationName = appName;
-
+            _connectionString = GetConnectionString(config);
+            LoadApplicationName(config);
             InitDocumentStore();
         }
 
-        private void InitDocumentStore()
+        public override string Name
         {
-            _documentStore = new DocumentStore
-            {
-                ConnectionStringName = _connectionString
-            };
-
-            _documentStore.Conventions.DocumentKeyGenerator = c => Guid.NewGuid().ToString();
-            _documentStore.Initialize();
+            get { return "RavenDB Error Log"; }
         }
-
-        //public RavenDbErrorLog(string connectionString)
-        //{
-        //    if (connectionString == null)
-        //        throw new ArgumentNullException("connectionString");
-
-        //    if (connectionString.Length == 0)
-        //        throw new ArgumentException(null, "connectionString");
-
-        //    _connectionString = connectionString;
-        //    InitDocumentStore();
-        //}
 
         public override string Log(Error error)
         {
@@ -80,11 +40,11 @@ namespace Elmah
             }
 
             var errorXml = ErrorXml.EncodeString(error);
-
             var errorDoc = new ErrorDocument
             {
+                ApplicationName = ApplicationName,
                 Error = error,
-                AllXml = errorXml
+                ErrorXml = errorXml
             };
 
             using (var session = _documentStore.OpenSession())
@@ -106,9 +66,9 @@ namespace Elmah
                 document = session.Load<ErrorDocument>(id);
             }
 
-            if (!string.IsNullOrEmpty(document.AllXml))
+            if (!string.IsNullOrEmpty(document.ErrorXml))
             {
-                result = new ErrorLogEntry(this, id, ErrorXml.DecodeString(document.AllXml));
+                result = new ErrorLogEntry(this, id, ErrorXml.DecodeString(document.ErrorXml));
             }
             else
             {
@@ -124,11 +84,17 @@ namespace Elmah
             {
                 RavenQueryStatistics stats;
 
-                var result = session.Query<ErrorDocument>()
+                IQueryable<ErrorDocument> result 
+                           = session.Query<ErrorDocument>()
                                     .Statistics(out stats)
                                     .Skip(pageSize * pageIndex)
                                     .Take(pageSize)
                                     .OrderByDescending(c => c.Error.Time);
+
+                if (!string.IsNullOrWhiteSpace(ApplicationName))
+                {
+                    result = result.Where(x => x.ApplicationName == ApplicationName);
+                }
 
                 foreach (var errorDocument in result)
                 {
@@ -139,33 +105,57 @@ namespace Elmah
             }
         }
 
-        public override string Name
+        private void LoadApplicationName(IDictionary config)
         {
-            get
+            // Set the application name as this implementation provides
+            // per-application isolation over a single store.
+            var appName = string.Empty;
+            if (config["applicationName"] != null)
             {
-                return "RavenDB Error Log";
+                appName = (string)config["applicationName"];
             }
+
+            ApplicationName = appName;
         }
 
-        private static string GetConnectionString(IDictionary config)
+        private string GetConnectionString(IDictionary config)
         {
-            // From ELMAH source
+            var connectionString = LoadConnectionString(config);
 
             //
+            // If there is no connection string to use then throw an 
+            // exception to abort construction.
+            //
+
+            if (connectionString.Length == 0)
+                throw new ApplicationException("Connection string is missing for the RavenDB error log.");
+
+            return connectionString;
+        }
+
+        private void InitDocumentStore()
+        {
+            _documentStore = new DocumentStore
+            {
+                ConnectionStringName = _connectionString
+            };
+
+            _documentStore.Conventions.DocumentKeyGenerator = c => Guid.NewGuid().ToString();
+            _documentStore.Initialize();
+        }
+
+        private string LoadConnectionString(IDictionary config)
+        {
+            // From ELMAH source
             // First look for a connection string name that can be 
             // subsequently indexed into the <connectionStrings> section of 
             // the configuration to get the actual connection string.
-            //
 
             string connectionStringName = (string)config["connectionStringName"];
 
             if (!string.IsNullOrEmpty(connectionStringName))
             {
-                return connectionStringName;
-
-
-                // TODO implement explicit connection string
-                ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings[connectionStringName];
+                var settings = ConfigurationManager.ConnectionStrings[connectionStringName];
 
                 if (settings == null)
                     return string.Empty;
@@ -173,22 +163,16 @@ namespace Elmah
                 return settings.ConnectionString ?? string.Empty;
             }
 
-            //
             // Connection string name not found so see if a connection 
             // string was given directly.
-            //
-
             var connectionString = (string)config["connectionString"];
             if (!string.IsNullOrEmpty(connectionString))
                 return connectionString;
 
-            //
             // As a last resort, check for another setting called 
             // connectionStringAppKey. The specifies the key in 
             // <appSettings> that contains the actual connection string to 
             // be used.
-            //
-
             var connectionStringAppKey = (string)config["connectionStringAppKey"];
             return !string.IsNullOrEmpty(connectionStringAppKey)
                  ? ConfigurationManager.AppSettings[connectionStringAppKey]
