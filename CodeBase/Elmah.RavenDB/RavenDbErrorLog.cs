@@ -11,7 +11,7 @@ namespace Elmah
 {
     public class RavenDbErrorLog : ErrorLog
     {
-        private readonly string _connectionString;
+        private readonly string _connectionStringName;
 
         private IDocumentStore _documentStore;
 
@@ -22,7 +22,7 @@ namespace Elmah
                 throw new ArgumentNullException("config");
             }
 
-            _connectionString = GetConnectionString(config);
+            _connectionStringName = GetConnectionStringName(config);
             LoadApplicationName(config);
             InitDocumentStore();
         }
@@ -118,9 +118,9 @@ namespace Elmah
             ApplicationName = appName;
         }
 
-        private string GetConnectionString(IDictionary config)
+        private string GetConnectionStringName(IDictionary config)
         {
-            var connectionString = LoadConnectionString(config);
+            var connectionString = LoadConnectionStringName(config);
 
             //
             // If there is no connection string to use then throw an 
@@ -137,14 +137,14 @@ namespace Elmah
         {
             _documentStore = new DocumentStore
             {
-                ConnectionStringName = _connectionString
+                ConnectionStringName = _connectionStringName
             };
 
             _documentStore.Conventions.DocumentKeyGenerator = c => Guid.NewGuid().ToString();
             _documentStore.Initialize();
         }
 
-        private string LoadConnectionString(IDictionary config)
+        private string LoadConnectionStringName(IDictionary config)
         {
             // From ELMAH source
             // First look for a connection string name that can be 
@@ -157,26 +157,13 @@ namespace Elmah
             {
                 var settings = ConfigurationManager.ConnectionStrings[connectionStringName];
 
-                if (settings == null)
-                    return string.Empty;
+                if (settings != null)
+                    return connectionStringName;
 
-                return settings.ConnectionString ?? string.Empty;
+                throw new ApplicationException(string.Format("Could not find a ConnectionString with the name '{0}'.", connectionStringName));
             }
 
-            // Connection string name not found so see if a connection 
-            // string was given directly.
-            var connectionString = (string)config["connectionString"];
-            if (!string.IsNullOrEmpty(connectionString))
-                return connectionString;
-
-            // As a last resort, check for another setting called 
-            // connectionStringAppKey. The specifies the key in 
-            // <appSettings> that contains the actual connection string to 
-            // be used.
-            var connectionStringAppKey = (string)config["connectionStringAppKey"];
-            return !string.IsNullOrEmpty(connectionStringAppKey)
-                 ? ConfigurationManager.AppSettings[connectionStringAppKey]
-                 : string.Empty;
+            throw new ApplicationException("You must specifiy the 'connectionStringName' attribute on the <errorLog /> element.");
         }
     }
 }
