@@ -3,13 +3,14 @@
   <metadata>
     <id>Elmah.RavenDB</id>
     <version>2.0</version>
+    <title>ELMAH on RavenDB</title>
     <authors>Christoph Keller, Greg Brant</authors>
     <owners>Greg Brant</owners>
     <licenseUrl>https://github.com/GregBrant/Elmah.RavenDB/blob/master/license.txt</licenseUrl>
     <projectUrl>https://github.com/GregBrant/Elmah.RavenDB</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <summary>RavenDB storage for Elmah</summary>
-    <description>RavenDB storage for Elmah</description>
+    <summary>ELMAH with configuration for getting started quickly on a RavenDB database as the error log.</summary>
+    <description>ELMAH with configuration for getting started quickly on a RavenDB database as the error log.</description>
     <releaseNotes>Upgraded RavenDB client to 2.0.2230.</releaseNotes>
     <copyright>Copyright 2012</copyright>
     <tags>Elmah RavenDB</tags>
