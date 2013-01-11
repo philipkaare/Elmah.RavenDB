@@ -31,3 +31,4 @@ _ReSharper*/
 /CodeBase/*.nupkg
 /CodeBase/*.ncrunchsolution
 /NuGetTemp
+*ncrunch*

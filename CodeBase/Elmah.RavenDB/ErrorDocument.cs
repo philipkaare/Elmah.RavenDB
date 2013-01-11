@@ -6,6 +6,7 @@ namespace Elmah
     {
         public string Id { get; set; }
         public Error Error { get; set; }
-        public string AllXml { get; set; }
+        public string ErrorXml { get; set; }
+        public string ApplicationName { get; set; }
     }
 }
