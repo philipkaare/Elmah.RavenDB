@@ -140,7 +140,7 @@ namespace Elmah
                 ConnectionStringName = _connectionStringName
             };
 
-            _documentStore.Conventions.DocumentKeyGenerator = c => Guid.NewGuid().ToString();
+            _documentStore.Conventions.DocumentKeyGenerator = (dbname, commands, entity) => Guid.NewGuid().ToString();
             _documentStore.Initialize();
         }
 
