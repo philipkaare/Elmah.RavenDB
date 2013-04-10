@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Elmah.RavenDB</id>
-    <version>2.0</version>
+    <version>2.0.1</version>
     <authors>Christoph Keller, Greg Brant</authors>
     <owners>Greg Brant</owners>
     <licenseUrl>https://github.com/GregBrant/Elmah.RavenDB/blob/master/license.txt</licenseUrl>
@@ -10,7 +10,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>RavenDB storage for Elmah</summary>
     <description>RavenDB storage for Elmah</description>
-    <releaseNotes>Upgraded RavenDB client to 2.0.2230.</releaseNotes>
+    <releaseNotes>Upgraded RavenDB client to 2.0.2330.</releaseNotes>
     <copyright>Copyright 2012</copyright>
     <tags>Elmah RavenDB</tags>
     <dependencies>
