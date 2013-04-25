@@ -16,7 +16,6 @@
     <tags>Elmah RavenDB</tags>
     <dependencies>
         <dependency id="elmah.corelibrary" version="1.2.2" />
-        <dependency id="NLog" version="2.0.0.2000" />
         <dependency id="RavenDB.Client" version="[2,3)" />
     </dependencies>
   </metadata>
