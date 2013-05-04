@@ -11,11 +11,11 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>ELMAH with configuration for getting started quickly on a RavenDB database as the error log.</summary>
     <description>ELMAH with configuration for getting started quickly on a RavenDB database as the error log.</description>
-    <releaseNotes>Upgraded RavenDB client to 2.0.2330.</releaseNotes>
+    <releaseNotes>Removed NLog dependency.</releaseNotes>
     <copyright>Copyright 2012</copyright>
     <tags>Elmah RavenDB</tags>
     <dependencies>
-        <dependency id="elmah.corelibrary" version="1.2.2" />
+      <dependency id="elmah.corelibrary" version="1.2.2" />
 	    <dependency id="RavenDB.Client" version="[2,3)" />
 	</dependencies>
   </metadata>
