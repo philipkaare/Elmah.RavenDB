@@ -32,3 +32,5 @@ _ReSharper*/
 /CodeBase/*.ncrunchsolution
 /NuGetTemp
 *ncrunch*
+*_TeamCity*
+*.sln.DotSettings
