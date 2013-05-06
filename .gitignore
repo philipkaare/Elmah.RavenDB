@@ -34,3 +34,4 @@ _ReSharper*/
 *ncrunch*
 *_TeamCity*
 *.sln.DotSettings
+*.nupkg
