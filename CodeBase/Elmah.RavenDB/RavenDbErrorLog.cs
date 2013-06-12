@@ -13,6 +13,7 @@ namespace Elmah
         private readonly string _connectionStringName;
 
         private IDocumentStore _documentStore;
+        private static IDocumentStore _externalProvidedDocumentStore;
 
         public RavenDbErrorLog(IDictionary config)
         {
@@ -21,9 +22,40 @@ namespace Elmah
                 throw new ArgumentNullException("config");
             }
 
-            _connectionStringName = GetConnectionStringName(config);
-            LoadApplicationName(config);
-            InitDocumentStore();
+            var shouldUseExternalStore = ShouldUseExternalStore(config);
+
+            if (shouldUseExternalStore)
+            {
+                if (_externalProvidedDocumentStore == null)
+                {
+                    throw new InvalidOperationException("You haven't provided a DocumentStore. Have you used RavenDbErrorLog.ConfigureWith() already.");
+                }
+
+                _documentStore = _externalProvidedDocumentStore;
+
+            }
+            else
+            {
+                _connectionStringName = GetConnectionStringName(config);
+                LoadApplicationName(config);
+                InitDocumentStore();
+            }
+        }
+
+        private bool ShouldUseExternalStore(IDictionary config)
+        {
+            var useExternalStoreConfigurationKey = "UseExternalStore";
+
+            var shouldUseExternalStore = false;
+
+            if (config.Contains(useExternalStoreConfigurationKey))
+            {
+                if (!bool.TryParse((string) config[useExternalStoreConfigurationKey], out shouldUseExternalStore))
+                {
+                    throw new InvalidOperationException("I can't determine the configuration value of UseExternalStore");
+                }
+            }
+            return shouldUseExternalStore;
         }
 
         public override string Name
@@ -83,7 +115,7 @@ namespace Elmah
             {
                 RavenQueryStatistics stats;
 
-                IQueryable<ErrorDocument> result 
+                IQueryable<ErrorDocument> result
                            = session.Query<ErrorDocument>()
                                     .Statistics(out stats)
                                     .Skip(pageSize * pageIndex)
@@ -167,7 +199,12 @@ namespace Elmah
 
         public static void ConfigureWith(IDocumentStore store)
         {
-            
+            if (store == null)
+            {
+                throw new ArgumentNullException("store", "You have to pass an instance of a RavenDB documentstore");
+            }
+
+            _externalProvidedDocumentStore = store;
         }
     }
 }
