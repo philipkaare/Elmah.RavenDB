@@ -32,6 +32,7 @@ namespace Elmah
                 }
 
                 _documentStore = _externalProvidedDocumentStore;
+                _documentStore.Conventions.RegisterIdConvention<ErrorDocument>((s, databaseCommands, errorDocument) => Guid.NewGuid().ToString());
 
             }
             else
