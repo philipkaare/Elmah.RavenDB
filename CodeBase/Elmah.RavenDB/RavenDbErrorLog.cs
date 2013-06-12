@@ -4,7 +4,6 @@ using System.Configuration;
 using System.Linq;
 using Raven.Client;
 using Raven.Client.Document;
-using Raven.Client.Extensions;
 using Raven.Client.Linq;
 
 namespace Elmah
@@ -164,6 +163,11 @@ namespace Elmah
             }
 
             throw new ApplicationException("You must specifiy the 'connectionStringName' attribute on the <errorLog /> element.");
+        }
+
+        public static void ConfigureWith(IDocumentStore store)
+        {
+            
         }
     }
 }
