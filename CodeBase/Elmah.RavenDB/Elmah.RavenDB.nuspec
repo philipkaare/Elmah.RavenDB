@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>Elmah.RavenDB</id>
-    <version>2.0.2</version>
+    <version>2.1.0</version>
     <title>ELMAH on RavenDB</title>
     <authors>Christoph Keller, Greg Brant</authors>
     <owners>Greg Brant</owners>
@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <summary>ELMAH with configuration for getting started quickly on a RavenDB database as the error log.</summary>
     <description>ELMAH with configuration for getting started quickly on a RavenDB database as the error log.</description>
-    <releaseNotes>Removed NLog dependency.</releaseNotes>
+    <releaseNotes>Added possibility to pass an external RavenDB store.</releaseNotes>
     <copyright>Copyright 2011-2013</copyright>
     <tags>Elmah RavenDB</tags>
     <dependencies>
