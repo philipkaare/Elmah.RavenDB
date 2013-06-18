@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using Raven.Client;
 using Raven.Client.Document;
+using Raven.Client.Extensions;
 using Raven.Client.Linq;
 
 namespace Elmah
@@ -17,46 +18,29 @@ namespace Elmah
 
         public RavenDbErrorLog(IDictionary config)
         {
-            if (config == null)
+            if (_externalProvidedDocumentStore != null)
             {
-                throw new ArgumentNullException("config");
-            }
-
-            var shouldUseExternalStore = ShouldUseExternalStore(config);
-
-            if (shouldUseExternalStore)
-            {
-                if (_externalProvidedDocumentStore == null)
-                {
-                    throw new InvalidOperationException("You haven't provided a DocumentStore. Have you used RavenDbErrorLog.ConfigureWith() already.");
-                }
-
                 _documentStore = _externalProvidedDocumentStore;
-                _documentStore.Conventions.RegisterIdConvention<ErrorDocument>((s, databaseCommands, errorDocument) => Guid.NewGuid().ToString());
-
             }
             else
             {
+                if (config == null)
+                {
+                    throw new ArgumentNullException("config");
+                }
+
                 _connectionStringName = GetConnectionStringName(config);
                 LoadApplicationName(config);
                 InitDocumentStore();
             }
+
+            ConfigureDocumentStore(_documentStore);
         }
 
-        private bool ShouldUseExternalStore(IDictionary config)
+        private void ConfigureDocumentStore(IDocumentStore documentStore)
         {
-            var useExternalStoreConfigurationKey = "UseExternalStore";
-
-            var shouldUseExternalStore = false;
-
-            if (config.Contains(useExternalStoreConfigurationKey))
-            {
-                if (!bool.TryParse((string) config[useExternalStoreConfigurationKey], out shouldUseExternalStore))
-                {
-                    throw new InvalidOperationException("I can't determine the configuration value of UseExternalStore");
-                }
-            }
-            return shouldUseExternalStore;
+            documentStore.Conventions
+                         .RegisterIdConvention<ErrorDocument>((s, databaseCommands, errorDocument) => Guid.NewGuid().ToString());
         }
 
         public override string Name
