@@ -156,7 +156,6 @@ namespace Elmah
                 ConnectionStringName = _connectionStringName
             };
 
-            _documentStore.Conventions.RegisterIdConvention<ErrorDocument>((s, databaseCommands, errorDocument) => Guid.NewGuid().ToString());
             _documentStore.Initialize();
         }
 
