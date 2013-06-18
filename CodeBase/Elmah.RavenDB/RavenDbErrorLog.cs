@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Configuration;
 using System.Linq;
+using System.Reflection;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Extensions;
@@ -12,12 +13,18 @@ namespace Elmah
     public class RavenDbErrorLog : ErrorLog
     {
         private readonly string _connectionStringName;
+        private readonly string _version;
 
         private IDocumentStore _documentStore;
         private static IDocumentStore _externalProvidedDocumentStore;
 
         public RavenDbErrorLog(IDictionary config)
         {
+            if (string.IsNullOrWhiteSpace(_version))
+            {
+                _version = RetrieveVersion();   
+            }            
+            
             if (_externalProvidedDocumentStore != null)
             {
                 _documentStore = _externalProvidedDocumentStore;
@@ -45,7 +52,10 @@ namespace Elmah
 
         public override string Name
         {
-            get { return "RavenDB Error Log"; }
+            get
+            {
+                return "RavenDB Error Log, version " + _version; 
+            }
         }
 
         public override string Log(Error error)
@@ -189,6 +199,14 @@ namespace Elmah
             }
 
             _externalProvidedDocumentStore = store;
+        }
+
+        private string RetrieveVersion()
+        {
+            var attribute = (AssemblyInformationalVersionAttribute)Assembly.GetExecutingAssembly()
+                                                              .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), false)
+                                                              .Single();
+            return attribute.InformationalVersion;
         }
     }
 }
