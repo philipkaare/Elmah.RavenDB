@@ -5,7 +5,7 @@
     <version>2.1.0</version>
     <title>ELMAH on RavenDB</title>
     <authors>Christoph Keller, Greg Brant</authors>
-    <owners>Greg Brant</owners>
+    <owners>Greg Brant, Christoph Keller</owners>
     <licenseUrl>https://github.com/GregBrant/Elmah.RavenDB/blob/master/license.txt</licenseUrl>
     <projectUrl>https://github.com/GregBrant/Elmah.RavenDB</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
