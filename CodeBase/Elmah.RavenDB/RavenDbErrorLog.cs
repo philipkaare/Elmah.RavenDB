@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using Raven.Client;
 using Raven.Client.Document;
-using Raven.Client.Extensions;
 using Raven.Client.Linq;
 
 namespace Elmah
@@ -176,7 +175,7 @@ namespace Elmah
             // subsequently indexed into the <connectionStrings> section of 
             // the configuration to get the actual connection string.
 
-            string connectionStringName = (string)config["connectionStringName"];
+            var connectionStringName = (string)config["connectionStringName"];
 
             if (!string.IsNullOrEmpty(connectionStringName))
             {
