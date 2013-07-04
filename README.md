@@ -54,4 +54,4 @@ Besides using a connection string you could also provide an instance of an IDocu
 
 Please make sure that you have finished the configuration before any errors could occur which should be handled by ELMAH.
 
-***Warning**:* A configured connection string will be ignored if you have passed an RavenDB store to `ConfigureWith`
+***Warning***: A configured connection string will be ignored if you have passed an RavenDB store to `ConfigureWith`
